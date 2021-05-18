@@ -1,0 +1,11 @@
+bioinfokit==2.0.3
+factor-analyzer==0.3.2
+ipywidgets>=7.6
+jupyter==1.0.0
+kneed==0.7.0
+numpy==1.18.5
+pandas==0.25.3
+plotly==4.14.0
+pywin32==225
+scikit-learn==0.23.1
+xlrd==2.0.1
