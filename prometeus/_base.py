@@ -8,7 +8,7 @@ import plotly.figure_factory as ff
 import plotly.graph_objects as go
 
 from kneed import KneeLocator
-from mpl_toolkits.mplot3d import Axes3D
+# from mpl_toolkits.mplot3d import Axes3D
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 

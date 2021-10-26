@@ -18,7 +18,7 @@ __all__ = ['PCAPlot']
 class PCAPlot(PCAnalyzer, BasePlot):
     def __init__(self, df: pd.DataFrame, clustered_labels: Optional[pd.Series] = None):
         super().__init__(df)
-        self.clustered_labels = self._validate_clusters_data(clustered_labels)
+        self.clustered_labels = self._validate_clusters_data(clustered_labels) if clustered_labels else None
 
     def generate_graphs(self, by: CUTOFF_METHOD, threshold: float = 0.8, n_components: Optional[int] = None,
                         is_filter: bool = False) -> widgets.Tab:

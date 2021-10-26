@@ -12,7 +12,7 @@ __all__ = ['FAnalyzer']
 
 class FAnalyzer(BaseAnalyzer):
     def __init__(self, df: pd.DataFrame):
-        self.df = df
+        self.df = df.dropna()[[c for c in df.columns if df[c].sum() != 0]]
         self.sum_sq, self.pro_var, self.cum_var = self._get_variance_info()
 
     def get_loadings(self, by: CUTOFF_METHOD = "scree", threshold: float = 1, n_factors: Optional[int] = None,
@@ -33,7 +33,8 @@ class FAnalyzer(BaseAnalyzer):
         _factors = self._get_factors(by, threshold) if n_factors is None else n_factors
         fa = FactorAnalyzer(rotation='varimax', n_factors=_factors, method='ml')
         fa.fit(df)
-        fa_loading_matrix = pd.DataFrame(fa.loadings_, columns=[f'FA{i}' for i in range(1, _factors + 1)])
+        fa_loading_matrix = pd.DataFrame(fa.loadings_, columns=[f'FA{i}' for i in range(1, _factors + 1)],
+                                         index=df.columns)
         return self._process_loading_matrix(fa_loading_matrix, is_filter)
 
     def get_clustering(self, by: CUTOFF_METHOD, threshold: float = 0.8, n_factors: Optional[int] = None,
@@ -82,7 +83,8 @@ class FAnalyzer(BaseAnalyzer):
         3. Cumulative variance
         """
         fa = FactorAnalyzer(rotation=None)
-        fa.fit(self.df.dropna())
+        # Factor analysis cannot have whole column sum = 0
+        fa.fit(self.df)
         return fa.get_factor_variance()
 
     def _get_factor_df(self, n_factors: int) -> pd.DataFrame:
